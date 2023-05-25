@@ -68,3 +68,20 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+Build Docker image
+```
+docker build -t merchants-frontend .
+```
+
+Push Docker application image into Kind cluster
+```
+kind load docker-image merchants-frontend:latest
+```
+
+Deploy on Kubernetes
+```
+kubectl create -f manifest.yml
+```
