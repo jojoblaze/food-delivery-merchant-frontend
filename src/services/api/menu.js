@@ -4,7 +4,7 @@ const MERCHANT_KEY = process.env.REACT_APP_MERCHANT_KEY
 
 export const getDishes = async () => {
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/merchants/${MERCHANT_KEY}`
+        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/menu`
             , {
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,14 +21,14 @@ export const getDishes = async () => {
             resolve(myJson);
         })
         .catch((reason) => {
-            reject(reason)
+            reject("REJECTED: " , reason)
         });
     });
 }
 
 export const getDish = async (dishId) => {
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/${dishId}`
+        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/menu/dish/${dishId}`
             , {
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export const getDish = async (dishId) => {
 
 export const postDish = async (dish) => {
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/merchants/${MERCHANT_KEY}`
+        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/menu`
             , {
                 method: 'POST',
                 headers: {
@@ -64,21 +64,21 @@ export const postDish = async (dish) => {
         )
         .then(function (response) {
             // console.log(response)
-            return response.json();
-        })
+            return response.json();        })
         .then(function (myJson) {
             // console.log(myJson);
-            resolve(myJson);
+            // resolve(myJson);
+            resolve({ success: true, data: myJson })
         })
         .catch((reason) => {
-            reject(reason)
+            reject({ success: false, reason })
         });
     });
 }
 
 export const putDish = async (dish) => {
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/merchants/${MERCHANT_KEY}`
+        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/menu/${dish.id}`
             , {
                 method: 'PUT',
                 headers: {
@@ -89,12 +89,8 @@ export const putDish = async (dish) => {
             }
         )
         .then(function (response) {
-            // console.log(response)
-            return response.json();
-        })
-        .then(function (myJson) {
-            // console.log(myJson);
-            resolve(myJson);
+            console.log("RESPONSE UPDATE!", response)
+            resolve(response.ok)
         })
         .catch((reason) => {
             reject(reason)
@@ -104,7 +100,7 @@ export const putDish = async (dish) => {
 
 export const deleteDish = async (dishId) => {
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/${dishId}`
+        fetch(`${API_URL}/merchants/${MERCHANT_KEY}/menu/${dishId}`
             , {
                 method: 'DELETE',
                 headers: {
@@ -115,11 +111,7 @@ export const deleteDish = async (dishId) => {
         )
         .then(function (response) {
             // console.log(response)
-            return response.json();
-        })
-        .then(function (myJson) {
-            // console.log(myJson);
-            resolve(myJson);
+            resolve(response.ok)
         })
         .catch((reason) => {
             reject(reason)

@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { 
-    createDish,
-    createDish_fulfilled,
-    deleteDish,
-    deleteDish_fulfilled,
-    fetchDishes, fetchDishes_fulfilled, updateDish, updateDish_fulfilled
+    createDish, createDish_fulfilled,
+    fetchDishes, fetchDishes_fulfilled, 
+    updateDish, updateDish_fulfilled,
+    removeDish, removeDish_fulfilled,
 } from "./menu.actions";
 
 export const initialState = {
@@ -25,7 +24,7 @@ export const MenuDataSlice = createSlice({
             .addCase(fetchDishes.fulfilled, fetchDishes_fulfilled)
             .addCase(createDish.fulfilled, createDish_fulfilled)
             .addCase(updateDish.fulfilled, updateDish_fulfilled)
-            .addCase(deleteDish.fulfilled, deleteDish_fulfilled)
+            .addCase(removeDish.fulfilled, removeDish_fulfilled)
     }
 })
 

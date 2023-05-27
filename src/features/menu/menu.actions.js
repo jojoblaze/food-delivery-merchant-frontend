@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getDishes, postDish, putDish } from "../../services/api/menu";
+import { getDish, getDishes, postDish, putDish, deleteDish } from "../../services/api/menu";
 
 const loadDishes = async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
         const response = await getDishes();
-        console.log("races:", response);
+        console.log("dishes:", response);
         return response;
     } catch (error) {
         return rejectWithValue(error.message);
@@ -18,6 +18,29 @@ export const fetchDishes_fulfilled = (state, action) => {
     state.dishes = [...action.payload]
 }
 
+const loadDish = async (_, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+        const response = await getDish(_);
+        console.log("dishes:", response);
+        return response;
+    } catch (error) {
+        return rejectWithValue(error.message);
+    }
+}
+export const fetchDish = createAsyncThunk('menu/dishes/get', loadDish)
+
+export const fetchDish_fulfilled = (state, action) => {
+    console.log('fetchDishes action:', action, 'fullfilled payload:', action.payload);
+    const updatedMenu = state.dishes.map(dish => {
+        if (dish.id === action.payload.id) {
+            return action.payload
+        } else {
+            return dish
+        }
+    })
+    state.dishes = [...updatedMenu]
+}
 
 export const createDish = createAsyncThunk(
     'menu/dishes/new',
@@ -25,25 +48,17 @@ export const createDish = createAsyncThunk(
     async (_, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         try {
-            const response = await postDish(_)
+            const response = await postDish(_.dish)
             // The response includes the complete post object, including unique ID
-            return response.data
+            return response
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 )
 export const createDish_fulfilled = (state, action) => {
-
-    // async function a() {
-    //     const dishes = await loadDishes();
-    //     state.dishes = [...dishes];
-    // }
-
-    if (action.payload === true) {
-        // a();
-        state.dishes = [...state.dishes, action.payload]
-    }
+    if (action.payload.success === true)
+        state.dishes = [...state.dishes, action.payload.data]
 }
 
 
@@ -53,7 +68,7 @@ export const updateDish = createAsyncThunk(
     async (_, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         try {
-            const response = await putDish(_)
+            const response = await putDish(_.dish)
             // The response includes the complete post object, including unique ID
             return response.data
         } catch (error) {
@@ -62,19 +77,13 @@ export const updateDish = createAsyncThunk(
     }
 )
 export const updateDish_fulfilled = (state, action) => {
-
-    // async function a() {
-    //     const dishes = await loadDishes();
-    //     state.dishes = [...dishes];
-    // }
-
     if (action.payload === true) {
         // a();
         state.dishes = [...state.dishes, action.meta.arg]
     }
 }
 
-export const deleteDish = createAsyncThunk(
+export const removeDish = createAsyncThunk(
     'menu/dishes/delete',
     // The payload creator receives the partial `{title, content, user}` object
     async (_, thunkAPI) => {
@@ -82,22 +91,15 @@ export const deleteDish = createAsyncThunk(
         try {
             const response = await deleteDish(_)
             // The response includes the complete post object, including unique ID
-            return response.data
+            return response
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 )
-export const deleteDish_fulfilled = (state, action) => {
-
-    // async function a() {
-    //     const dishes = await loadDishes();
-    //     state.dishes = [...dishes];
-    // }
-
+export const removeDish_fulfilled = (state, action) => {
     if (action.payload === true) {
-        // a();
-        const newDishes = state.dishes.filter(d => d._id !== action.meta.arg)
+        const newDishes = state.dishes.filter(d => d.id !== action.meta.arg)
         state.dishes = [...newDishes]
     }
 }

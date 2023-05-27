@@ -8,7 +8,7 @@ COPY package-lock.json .
 RUN npm install
 # Copy app files
 COPY . .
-RUN npm run build --production
+RUN npm run build --omit=dev
 
 # # Expose port
 # EXPOSE 3000
