@@ -36,9 +36,11 @@ function App() {
                   Menu Editor
                 </Link>
 
-                <a className="navbar-item">
+                <Link className="navbar-item"
+                  to={`orders/${process.env.REACT_APP_MERCHANT_KEY}`}
+                >
                   Ordinazioni
-                </a>
+                </Link>
               </div>
 
               <div className="navbar-end">

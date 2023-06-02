@@ -4,6 +4,7 @@ import ErrorPage from "./error-page";
 import App from './App';
 import { MenuEditor } from './components/menu-editor';
 import { DishEditor } from './components/dish-editor';
+import { OrdersManager } from './components/orders-manager';
 
 
 const routesConfig = [
@@ -31,6 +32,11 @@ const routesConfig = [
       {
         path: 'menu-editor/:merchantId/dish/:dishId',
         element: <DishEditor />,
+        // loader: interactiveMasterMapLoader
+      },
+      {
+        path: 'orders/:merchantId',
+        element: <OrdersManager />,
         // loader: interactiveMasterMapLoader
       },
     ],
