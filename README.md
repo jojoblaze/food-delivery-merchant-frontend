@@ -78,10 +78,10 @@ docker build -t merchants-frontend .
 
 Push Docker application image into Kind cluster
 ```
-kind load docker-image merchants-frontend:latest
+kind load docker-image merchants-frontend:latest --name <cluster name>
 ```
 
 Deploy on Kubernetes
 ```
-kubectl create -f manifest.yml
+kubectl create -f manifest.yml --context kind-<cluster name>
 ```
