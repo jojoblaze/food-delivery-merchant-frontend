@@ -27,7 +27,7 @@ export const OrdersManager = () => {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-      .withUrl(process.env.REACT_APP_WEBSOCKET_URL)
+      .withUrl(`${process.env.REACT_APP_WEBSOCKET_URL}/orders`)
       .withAutomaticReconnect()
       .build();
 
