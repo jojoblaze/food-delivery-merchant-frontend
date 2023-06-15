@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { createDish, fetchDish, updateDish } from "../../features/menu/menu.actions";
+import {
+  createDish,
+  fetchDish,
+  updateDish,
+} from "../../features/menu/menu.actions";
 import { InfoDialog } from "../shared/info-dialog";
 
 export const DishEditor = () => {
@@ -21,6 +25,8 @@ export const DishEditor = () => {
 
   const [dialogStatus, setDialogStatus] = useState({
     showUpdateSuccess: false,
+    showUpdateFailed: false,
+    message: null
   });
 
   const onSave = async () => {
@@ -37,8 +43,9 @@ export const DishEditor = () => {
       ).unwrap();
       console.log("RESULT: ", result);
     }
-    if (result.success === true) setDialogStatus({ ...dialogStatus, showUpdateSuccess: true });
-    // else showErrorSave();
+    if (result.success === true)
+      setDialogStatus({ ...dialogStatus, showUpdateSuccess: true });
+    else setDialogStatus({ ...dialogStatus, showUpdateFailed: true, message: result.reason });
   };
 
   if (item !== undefined) {
@@ -54,7 +61,7 @@ export const DishEditor = () => {
                   className="input"
                   type="text"
                   placeholder="Name"
-                  value={item.name || ''}
+                  value={item.name || ""}
                   onChange={(e) => setItem({ ...item, name: e.target.value })}
                 />
               </div>
@@ -66,7 +73,7 @@ export const DishEditor = () => {
                 <textarea
                   className="textarea"
                   placeholder="Summary"
-                  value={item.summary || ''}
+                  value={item.summary || ""}
                   onChange={(e) =>
                     setItem({ ...item, summary: e.target.value })
                   }
@@ -81,31 +88,35 @@ export const DishEditor = () => {
                   className="input"
                   type="number"
                   placeholder="Price"
-                  value={item.price || ''}
-                  onChange={(e) =>
-                    setItem({ ...item, price: e.target.value })
-                  }
+                  value={item.price || ""}
+                  onChange={(e) => setItem({ ...item, price: e.target.value })}
                 />
               </div>
             </div>
 
-            <button
-              className="button"
-              onClick={onSave}
-            >
+            <button className="button" onClick={onSave}>
               Update
             </button>
           </div>
         </section>
 
         <InfoDialog
-        show={dialogStatus.showUpdateSuccess}
-        message={"Dish updated successfully."}
-        okText={`Ok`}
-        okAction={() =>
-          setDialogStatus({ ...dialogStatus, showUpdateSuccess: false })
-        }
-      />
+          show={dialogStatus.showUpdateSuccess}
+          message={"Dish updated successfully."}
+          okText={`Ok`}
+          okAction={() =>
+            setDialogStatus({ ...dialogStatus, showUpdateSuccess: false, message: null })
+          }
+        />
+
+        <InfoDialog
+          show={dialogStatus.showUpdateFailed}
+          message={dialogStatus.message}
+          okText={`Ok`}
+          okAction={() =>
+            setDialogStatus({ ...dialogStatus, showUpdateFailed: false, message: null })
+          }
+        />
       </>
     );
   } else {

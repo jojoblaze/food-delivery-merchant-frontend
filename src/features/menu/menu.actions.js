@@ -52,7 +52,7 @@ export const createDish = createAsyncThunk(
             // The response includes the complete post object, including unique ID
             return response
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.reason);
         }
     }
 )
